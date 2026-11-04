@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>هايبر المطرية</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      background: #f7f8f7;
+      color: #222;
+    }
+    header {
+      background: #fff;
+      padding: 24px 15px;
+      text-align: center;
+      border-bottom: 4px solid #168447;
+    }
+    h1 { color: #c52228; margin: 0 0 8px; }
+    .intro { text-align: center; padding: 20px; }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 12px;
+    }
+    .product {
+      background: white;
+      border-radius: 12px;
+      padding: 18px 10px;
+      text-align: center;
+      box-shadow: 0 2px 8px #00000010;
+    }
+    .price { color: #168447; font-weight: bold; }
+    button {
+      background: #168447;
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+    }
+    footer { text-align: center; padding: 25px; }
+    a { color: #168447; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>هايبر المطرية</h1>
+    <div>طلباتك لحد باب البيت - 24 ساعة</div>
+  </header>
+
+  <div class="intro">
+    <h2>منتجاتنا</h2>
+    <p>أهلاً بيك في متجر هايبر المطرية</p>
+  </div>
+
+  <main class="products" id="products"></main>
+
+  <footer>
+    <a href="https://wa.me/20122203202">
+      تواصل معانا على واتساب
+    </a>
+  </footer>
+
+  <script>
+    const products = [
+      { name: "نسكافيه كلاسيك 190 جم", price: 330 },
+      { name: "حليب جهينة 1.5 لتر", price: 70 },
+      { name: "حليب بخيره نصف لتر", price: 25 },
+      { name: "حليب المراعي 1.5 لتر", price: 75 },
+      { name: "حليب المراعي 1 لتر", price: 50 }
+    ];
+
+    const container = document.getElementById("products");
+    products.forEach(product => {
+      const card = document.createElement("div");
+      card.className = "product";
+
+      const name = document.createElement("h3");
+      name.textContent = product.name;
+
+      const price = document.createElement("p");
+      price.className = "price";
+      price.textContent = product.price + " جنيه";
+
+      const button = document.createElement("button");
+      button.textContent = "أضف للسلة";
+      button.disabled = true;
+      button.title = "السلة قيد التجهيز";
+
+      card.append(name, price, button);
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>
