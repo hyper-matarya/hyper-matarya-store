@@ -32,7 +32,7 @@ let cart=[];
 function getQty(i){return cart.find(c=>c.i===i)?.qty||0}
 function renderProducts(){
  const q=document.getElementById('search').value.trim();
- document.getElementById('products').innerHTML=products.map((p,i)=>({...p,i})).filter(p=>p.name.includes(q)).map(p=>`<article class="item"><h3>${p.name}</h3><div class="price">${p.price} جنيه</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(${p.i},-1)" aria-label="تقليل ${p.name}">−</button><span class="qty-number">${getQty(p.i)}</span><button class="qty-btn" onclick="add(${p.i})" aria-label="زيادة ${p.name}">+</button></div></article>`).join('')||'<p>لا توجد نتائج</p>';
+  document.getElementById('products').innerHTML=products.map((p,i)=>({...p,i})).filter(p=>p.name.includes(q)).map(p=>`<article class="item"><h3>${p.name}</h3><div class="price">${p.price} جنيه</div><div class="qty-controls"><button class="qty-btn" onclick="add(${p.i})" aria-label="زيادة ${p.name}">+</button><span class="qty-number">${getQty(p.i)}</span><button class="qty-btn" onclick="changeQty(${p.i},-1)" aria-label="تقليل ${p.name}">−</button></div></article>`).join('')||'<p>لا توجد نتائج</p>';
 }
 function add(i){const c=cart.find(x=>x.i===i);if(c)c.qty++;else cart.push({i,qty:1});refresh()}
 function changeQty(i,delta){const item=cart.find(x=>x.i===i);if(!item)return;item.qty+=delta;if(item.qty<=0)cart=cart.filter(x=>x.i!==i);refresh()}
