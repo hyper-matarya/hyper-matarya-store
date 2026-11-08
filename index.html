@@ -17,7 +17,17 @@
 <section class="cart"><h2>سلة المشتريات</h2><div id="cart"></div><h3 id="total" aria-live="polite"></h3><div class="actions"><button onclick="sendOrder()">إرسال الطلب عبر واتساب</button><button onclick="clearCart()" style="background:#777">تفريغ السلة</button></div></section>
 </main><footer>هايبر المطرية — خدمة العملاء: 01222203202</footer>
 <script>
-const products=[{name:'بن هايبر المطرية 50 جم',price:30},{name:'بن هايبر المطرية 100 جم',price:55},{name:'بن هايبر المطرية 250 جم',price:135},{name:'دبس رمان يمامة 330 مل',price:100}];
+const products = [
+  { name: "بن هايبر المطرية 50 جم", price: 30 },
+  { name: "بن هايبر المطرية 100 جم", price: 55 },
+  { name: "بن هايبر المطرية 250 جم", price: 135 },
+  { name: "دبس رمان يمامة 330 مل", price: 100 },
+  { name: "نسكافيه كلاسيك 190 جم", price: 330 },
+  { name: "حليب جهينة 1.5 لتر", price: 70 },
+  { name: "حليب بخيره نصف لتر", price: 25 },
+  { name: "حليب المراعي 1.5 لتر", price: 75 },
+  { name: "حليب المراعي 1 لتر", price: 50 }
+];
 let cart=[];
 function getQty(i){return cart.find(c=>c.i===i)?.qty||0}
 function renderProducts(){
