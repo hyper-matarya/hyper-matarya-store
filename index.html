@@ -59,7 +59,7 @@ const name = document.getElementById('customerName').value.trim();
 const phone = document.getElementById('customerPhone').value.trim();
 const address = document.getElementById('customerAddress').value.trim();
 const notes = document.getElementById('customerNotes').value.trim();
-if (!name || !/^01[0125][0-9]{8}$/.test(phone) || !address) {
+if (!name || !/^(?:0|\+20|0020)1[0125][0-9]{8}$/.test(phone) || !address) {
   alert('من فضلك أدخل الاسم ورقم موبايل مصري صحيح والعنوان');
   return;
 }
