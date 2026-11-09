@@ -36,6 +36,11 @@ const products = [
   { name: "حليب المراعي 1 لتر", price: 50 }
 ];
 let cart=[];
+window.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('customerName').value = localStorage.getItem('customerName') || '';
+  document.getElementById('customerPhone').value = localStorage.getItem('customerPhone') || '';
+  document.getElementById('customerAddress').value = localStorage.getItem('customerAddress') || '';
+});
   
 function getQty(i){return cart.find(c=>c.i===i)?.qty||0}
 function renderProducts(){
@@ -72,6 +77,9 @@ if (!name || !/^(?:0|\+20|0020)1[0125][0-9]{8}$/.test(phone) || !address) {
 }
 msg = msg.replace(/الإجمالي:\s*\d+(?:\.\d+)? جنيه/, 'إجمالي المنتجات: '+subtotal+' جنيه');
 msg += '\nمصاريف التوصيل: '+(deliveryFee ? deliveryFee+' جنيه' : 'مجاني')+'\nالإجمالي النهائي: '+finalTotal+' جنيه';
+localStorage.setItem('customerName', name);
+localStorage.setItem('customerPhone', phone);
+localStorage.setItem('customerAddress', address);
 
   msg += '\nاسم العميل: ' + name + '\nالموبايل: ' + phone + '\nالعنوان: ' + address + (notes ? '\nملاحظات: ' + notes : ''); 
   window.open('https://wa.me/201222203202?text='+encodeURIComponent(msg),'_blank');
