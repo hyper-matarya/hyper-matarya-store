@@ -41,6 +41,11 @@ window.addEventListener('DOMContentLoaded', function() {
   document.getElementById('customerPhone').value = localStorage.getItem('customerPhone') || '';
   document.getElementById('customerAddress').value = localStorage.getItem('customerAddress') || '';
 });
+['customerName', 'customerPhone', 'customerAddress'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', function() {
+    localStorage.setItem(id, this.value);
+  });
+});
   
 function getQty(i){return cart.find(c=>c.i===i)?.qty||0}
 function renderProducts(){
