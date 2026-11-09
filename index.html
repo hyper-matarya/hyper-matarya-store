@@ -50,11 +50,18 @@ function clearCart(){cart=[];refresh()}
 function refresh(){renderProducts();renderCart()}
 function renderCart(){
  document.getElementById('cart').innerHTML=cart.map(c=>`<div class="cart-row"><span>${products[c.i].name}</span><span class="cart-qty"><button onclick="changeQty(${c.i},-1)">−</button><strong>${c.qty}</strong><button onclick="add(${c.i})">+</button></span><span>${products[c.i].price*c.qty} جنيه <button onclick="removeItem(${c.i})">حذف</button></span></div>`).join('')||'<p>السلة فارغة</p>';
- document.getElementById('total').textContent='الإجمالي: '+cart.reduce((s,c)=>s+products[c.i].price*c.qty,0)+' جنيه';
+const cartSubtotal=cart.reduce((s,c)=>s+products[c.i].price*c.qty,0);
+const cartDelivery=cartSubtotal<100?10:0;
+document.getElementById('total').textContent='المنتجات: '+cartSubtotal+' جنيه | التوصيل: '+(cartDelivery?cartDelivery+' جنيه':'مجاني')+' | الإجمالي: '+(cartSubtotal+cartDelivery)+' جنيه';
+ 
 }
 function sendOrder(){
  if(!cart.length){alert('أضف منتجات للسلة أولًا');return}
- let msg='طلب تجريبي من متجر هايبر المطرية\n'+cart.map(c=>`${products[c.i].name} × ${c.qty} = ${products[c.i].price*c.qty} جنيه`).join('\n')+'\nالإجمالي: '+cart.reduce((s,c)=>s+products[c.i].price*c.qty,0)+' جنيه\nيرجى تأكيد الأسعار والتوافر والتوصيل.';
+const subtotal=cart.reduce((s,c)=>s+products[c.i].price*c.qty,0);
+const deliveryFee=subtotal<100?10:0;
+const finalTotal=subtotal+deliveryFee;
+ 
+  let msg='طلب تجريبي من متجر هايبر المطرية\n'+cart.map(c=>`${products[c.i].name} × ${c.qty} = ${products[c.i].price*c.qty} جنيه`).join('\n')+'\nالإجمالي: '+cart.reduce((s,c)=>s+products[c.i].price*c.qty,0)+' جنيه\nيرجى تأكيد الأسعار والتوافر والتوصيل.';
 const name = document.getElementById('customerName').value.trim();
 const phone = document.getElementById('customerPhone').value.trim();
 const address = document.getElementById('customerAddress').value.trim();
@@ -63,7 +70,10 @@ if (!name || !/^(?:0|\+20|0020)1[0125][0-9]{8}$/.test(phone) || !address) {
   alert('من فضلك أدخل الاسم ورقم موبايل مصري صحيح والعنوان');
   return;
 }
-msg += '\nاسم العميل: ' + name + '\nالموبايل: ' + phone + '\nالعنوان: ' + address + (notes ? '\nملاحظات: ' + notes : ''); 
+msg = msg.replace(/الإجمالي:\s*\d+(?:\.\d+)? جنيه/, 'إجمالي المنتجات: '+subtotal+' جنيه');
+msg += '\nمصاريف التوصيل: '+(deliveryFee ? deliveryFee+' جنيه' : 'مجاني')+'\nالإجمالي النهائي: '+finalTotal+' جنيه';
+
+  msg += '\nاسم العميل: ' + name + '\nالموبايل: ' + phone + '\nالعنوان: ' + address + (notes ? '\nملاحظات: ' + notes : ''); 
   window.open('https://wa.me/201222203202?text='+encodeURIComponent(msg),'_blank');
 }
 refresh();
