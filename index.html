@@ -27,7 +27,8 @@
 </section>
 </main><footer>هايبر المطرية — خدمة العملاء: 01222203202</footer>
 <script>
-const products = [
+let selectedCategory = null;
+  const products = [
   { name: "بن هايبر المطرية 50 جم", price: 30 },
   { name: "بن هايبر المطرية 100 جم", price: 55 },
   { name: "بن هايبر المطرية 250 جم", price: 135 },
@@ -131,7 +132,7 @@ category_id: p.category_id,
 }
 
 
-let selectedCategory = null;
+
 
 async function loadCategories() {
   try {
