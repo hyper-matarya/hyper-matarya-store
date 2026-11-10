@@ -117,7 +117,7 @@ const SUPABASE_KEY = 'sb_publishable_3Mv4NoJU8kb4ffL2b6rYvA_DSAtOrp3';
     cart = [];
     refresh();
   } catch (error) {
-    console.error('Supabase:', error);
+  alert('Supabase error: ' + error.message);
   }
 }
 
