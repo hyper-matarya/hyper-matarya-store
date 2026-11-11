@@ -119,6 +119,7 @@ const SUPABASE_KEY = 'sb_publishable_3Mv4NoJU8kb4ffL2b6rYvA_DSAtOrp3';
       name: p.name,
       
 category_id: p.category_id,
+      subcategory_id: p.subcategory_id,
 
       price: Number(p.price),
       image: p.image_url || ''
@@ -157,11 +158,53 @@ async function loadCategories() {
 
 function selectCategory(id) {
   selectedCategory = selectedCategory === id ? null : id;
+  selectedSubcategory = null;
+  showSubcategories();
+  renderProducts();
+}
+  
+let subcategories = [];
+
+async function loadSubcategories() {
+  try {
+    const response = await fetch(
+      SUPABASE_URL + '/rest/v1/subcategories?select=id,name,category_id&order=id.asc',
+      { headers: { apikey: SUPABASE_KEY } }
+    );
+    if (!response.ok) throw new Error('تعذر تحميل الأقسام الفرعية');
+    subcategories = await response.json();
+
+    let container = document.getElementById('subcategories');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'subcategories';
+      document.getElementById('categories').after(container);
+    }
+    showSubcategories();
+  } catch (error) {
+    console.error('Subcategories error:', error);
+  }
+}
+
+function showSubcategories() {
+  const container = document.getElementById('subcategories');
+  if (!container) return;
+
+  container.innerHTML = selectedCategory === null ? '' :
+    subcategories
+      .filter(s => Number(s.category_id) === Number(selectedCategory))
+      .map(s => `<button type="button" onclick="selectSubcategory(${Number(s.id)})">${s.name}</button>`)
+      .join(' ');
+}
+
+function selectSubcategory(id) {
+  selectedSubcategory = selectedSubcategory === id ? null : id;
   renderProducts();
 }
 
-loadCategories();
 
+loadCategories();
+loadSubcategories();
   loadProducts();
 </script>
 </body>
