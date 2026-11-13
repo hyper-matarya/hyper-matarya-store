@@ -1,212 +1,44 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>هايبر المطرية | المتجر الإلكتروني</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f7f8f6;color:#222}header{background:#fff;padding:20px;border-bottom:4px solid #187a40;text-align:center}h1{color:#b9232e;margin:0}small{color:#666}.wrap{max-width:960px;margin:auto;padding:16px}.hero{background:#e9f4ed;padding:22px;border-radius:15px;margin:15px 0}input{width:100%;padding:14px;border:1px solid #ddd;border-radius:10px;font-size:16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:18px 0}.item{background:#fff;border:1px solid #eee;border-radius:12px;padding:17px;min-width:0}.item h3{margin:0 0 12px}.price{color:#187a40;font-weight:bold}button{background:#187a40;color:#fff;border:0;border-radius:9px;padding:10px 14px;cursor:pointer;font-size:15px}button:focus-visible{outline:3px solid #222;outline-offset:2px}.qty-controls{display:flex;direction:rtl;;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap}.qty-controls .qty-btn{background:#b9232e;min-width:38px}.qty-number{font-weight:bold;min-width:22px;text-align:center}.cart{background:#fff;border-radius:12px;padding:20px;margin:20px 0;border:1px solid #ddd}.cart-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee;flex-wrap:wrap}.cart-row button{background:#b9232e;padding:7px 10px}.cart-qty{display:flex;align-items:center;gap:8px}.actions{display:flex;gap:10px;flex-wrap:wrap}footer{text-align:center;padding:24px;color:#666}@media(max-width:480px){.wrap{padding:12px}.hero{padding:16px}.grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.item{padding:13px}.item h3{font-size:16px}.qty-controls{gap:6px}.qty-controls .qty-btn{min-width:34px;padding:9px 10px}}
-</style>
-</head>
-<body>
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f7f8f6;color:#222}header{background:#fff;padding:20px;border-bottom:4px solid #187a40;text-align:center}h1{color:#b9232e;margin:0}small{color:#666}.wrap{max-width:960px;margin:auto;padding:16px}.hero{background:#e9f4ed;padding:22px;border-radius:15px;margin:15px 0}input,textarea{width:100%;padding:14px;border:1px solid #ddd;border-radius:10px;font-size:16px;margin:5px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:18px 0}.item{background:#fff;border:1px solid #eee;border-radius:12px;padding:17px;min-width:0}.item h3{margin:0 0 12px}.price{color:#187a40;font-weight:bold}button{background:#187a40;color:#fff;border:0;border-radius:9px;padding:10px 14px;cursor:pointer;font-size:15px}button:focus-visible{outline:3px solid #222;outline-offset:2px}.qty-controls{display:flex;direction:rtl;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap}.qty-btn{background:#b9232e;min-width:38px}.qty-number{font-weight:bold;min-width:22px;text-align:center}.cart{background:#fff;border-radius:12px;padding:20px;margin:20px 0;border:1px solid #ddd}.cart-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee;flex-wrap:wrap}.cart-row button{background:#b9232e;padding:7px 10px}.cart-qty{display:flex;align-items:center;gap:8px}.actions{display:flex;gap:10px;flex-wrap:wrap}.category-group{margin:8px 0}.category-main{width:100%;text-align:right}.category-main.active{background:#b9232e}.subcategory-list{display:flex;flex-wrap:wrap;gap:8px;padding:10px 14px;background:#eef7f0;border-radius:0 0 10px 10px}.subcategory-button{background:#fff;color:#187a40;border:1px solid #187a40}.subcategory-button.active{background:#187a40;color:white}footer{text-align:center;padding:24px;color:#666}@media(max-width:480px){.wrap{padding:12px}.hero{padding:16px}.grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.item{padding:13px}.item h3{font-size:16px}}
+</style></head><body>
 <header><h1>هايبر المطرية</h1><small>متجرك قريب منك على مدار 24 ساعة</small></header>
-<main class="wrap">
-<section class="hero"><h2>كل احتياجات بيتك في مكان واحد</h2><p>توصيل مجاني وفق مناطق وشروط الخدمة المعتمدة.</p><input id="search" placeholder="ابحث عن منتج..." aria-label="ابحث عن منتج" oninput="renderProducts()"></section>
+<main class="wrap"><section class="hero"><h2>كل احتياجات بيتك في مكان واحد</h2><p>توصيل مجاني وفق مناطق وشروط الخدمة المعتمدة.</p><input id="search" placeholder="ابحث عن منتج..." aria-label="ابحث عن منتج" oninput="renderProducts()"></section>
 <h2>منتجات تجريبية</h2><p>الأسعار والمنتجات التالية للعرض التجريبي فقط، ويجب مراجعتها قبل النشر.</p>
-
-<div id="categories"></div>
-  <div id="subcategories"></div>
-
-  <div id="products" class="grid"></div>
+<div id="categories"></div><div id="products" class="grid"></div>
 <section class="cart"><h2>سلة المشتريات</h2><div id="cart"></div><h3 id="total" aria-live="polite"></h3><div class="actions"><button onclick="sendOrder()">إرسال الطلب عبر واتساب</button><button onclick="clearCart()" style="background:#777">تفريغ السلة</button></div></section>
-  <section class="cart">
-<h2>بيانات التوصيل</h2>
-<input id="customerName" placeholder="اسم العميل" autocomplete="name">
-<input id="customerPhone" type="tel" placeholder="رقم الموبايل" autocomplete="tel">
-<input id="customerAddress" placeholder="العنوان بالتفصيل">
-<textarea id="customerNotes" placeholder="ملاحظات إضافية (اختياري)" style="width:100%;padding:14px;margin-top:10px;border:1px solid #ddd;border-radius:10px"></textarea>
-</section>
-</main><footer>هايبر المطرية — خدمة العملاء: 01222203202</footer>
+<section class="cart"><h2>بيانات التوصيل</h2><input id="customerName" placeholder="اسم العميل" autocomplete="name"><input id="customerPhone" type="tel" placeholder="رقم الموبايل" autocomplete="tel"><input id="customerAddress" placeholder="العنوان بالتفصيل"><textarea id="customerNotes" placeholder="ملاحظات إضافية (اختياري)"></textarea></section></main>
+<footer>هايبر المطرية — خدمة العملاء: 01222203202</footer>
 <script>
-let selectedCategory = null;
-  const products = [
-  { name: "بن هايبر المطرية 50 جم", price: 30 },
-  { name: "بن هايبر المطرية 100 جم", price: 55 },
-  { name: "بن هايبر المطرية 250 جم", price: 135 },
-  { name: "دبس رمان يمامة 330 مل", price: 100 },
-  { name: "نسكافيه كلاسيك 190 جم", price: 330 },
-  { name: "حليب جهينة 1.5 لتر", price: 70, image: "https://mysycmmwpzgvyevclwvn.supabase.co/storage/v1/object/public/product-images/file_000000007cdc81f5ab02d8cd9e136b41.png" },
-  { name: "حليب بخيره نصف لتر", price: 25 },
-  { name: "حليب المراعي 1.5 لتر", price: 75 },
-  { name: "حليب المراعي 1 لتر", price: 50 }
-];
-let cart=[];
-window.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('customerName').value = localStorage.getItem('customerName') || '';
-  document.getElementById('customerPhone').value = localStorage.getItem('customerPhone') || '';
-  document.getElementById('customerAddress').value = localStorage.getItem('customerAddress') || '';
-});
-['customerName', 'customerPhone', 'customerAddress'].forEach(function(id) {
-  document.getElementById(id).addEventListener('input', function() {
-    localStorage.setItem(id, this.value);
-  });
-});
-  
+const SUPABASE_URL='https://mysycmmwpzgvyevclwvn.supabase.co';
+const SUPABASE_KEY='sb_publishable_3Mv4NoJU8kb4ffL2b6rYvA_DSAtOrp3';
+let selectedCategory=null,selectedSubcategory=null,subcategories=[],categories=[],cart=[];
+const products=[
+{name:'بن هايبر المطرية 50 جم',price:30},{name:'بن هايبر المطرية 100 جم',price:55},{name:'بن هايبر المطرية 250 جم',price:135},{name:'دبس رمان يمامة 330 مل',price:100},{name:'نسكافيه كلاسيك 190 جم',price:330},{name:'حليب جهينة 1.5 لتر',price:70,image:'https://mysycmmwpzgvyevclwvn.supabase.co/storage/v1/object/public/product-images/file_000000007cdc81f5ab02d8cd9e136b41.png'},{name:'حليب بخيره نصف لتر',price:25},{name:'حليب المراعي 1.5 لتر',price:75},{name:'حليب المراعي 1 لتر',price:50}];
+['customerName','customerPhone','customerAddress'].forEach(id=>{const el=document.getElementById(id);el.value=localStorage.getItem(id)||'';el.addEventListener('input',()=>localStorage.setItem(id,el.value));});
 function getQty(i){return cart.find(c=>c.i===i)?.qty||0}
 function renderProducts(){
- const q=document.getElementById('search').value.trim();
-  document.getElementById('products').innerHTML=products.map((p,i)=>({...p,i})).filter(p=>p.name.includes(q)).map(p=>`<article class="item"><h3>${p.name}</h3><div class="price">${p.price} جنيه</div><div class="qty-controls"><button class="qty-btn" onclick="add(${p.i})" aria-label="زيادة ${p.name}">+</button><span class="qty-number">${getQty(p.i)}</span><button class="qty-btn" onclick="changeQty(${p.i},-1)" aria-label="تقليل ${p.name}">−</button></div></article>`).join('')||'<p>لا توجد نتائج</p>';
-  
-document.querySelectorAll('#products .item').forEach(el => { const i = Number(el.querySelector('button[onclick*="add("]')?.getAttribute('onclick')?.match(/add\((\d+)\)/)?.[1]); if (!Number.isNaN(i)) el.style.display = (selectedCategory === null || Number(products[i].category_id) === selectedCategory) ? '' : 'none'; });
-
-document.querySelectorAll('#products .item').forEach((card, i) => { const p = products.map((p, i) => ({...p, i})).filter(p => p.name.includes(q))[i]; if (p.image) card.insertAdjacentHTML('afterbegin', `<img src="${p.image}" alt="${p.name}" style="width:100%;height:150px;object-fit:contain;margin-bottom:12px">`); });
+const q=document.getElementById('search').value.trim();
+const filtered=products.map((p,i)=>({...p,i})).filter(p=>p.name.includes(q)).filter(p=>selectedCategory===null||Number(p.category_id)===selectedCategory).filter(p=>selectedSubcategory===null||Number(p.subcategory_id)===selectedSubcategory);
+document.getElementById('products').innerHTML=filtered.map(p=>`<article class="item">${p.image?`<img src="${p.image}" alt="${p.name}" style="width:100%;height:150px;object-fit:contain;margin-bottom:12px">`:''}<h3>${p.name}</h3><div class="price">${p.price} جنيه</div><div class="qty-controls"><button class="qty-btn" onclick="add(${p.i})">+</button><span class="qty-number">${getQty(p.i)}</span><button class="qty-btn" onclick="changeQty(${p.i},-1)">−</button></div></article>`).join('')||'<p>لا توجد نتائج</p>';
 }
-  function add(i){const c=cart.find(x=>x.i===i);if(c)c.qty++;else cart.push({i,qty:1});refresh()}
-function changeQty(i,delta){const item=cart.find(x=>x.i===i);if(!item)return;item.qty+=delta;if(item.qty<=0)cart=cart.filter(x=>x.i!==i);refresh()}
-function removeItem(i){cart=cart.filter(x=>x.i!==i);refresh()}
-function clearCart(){cart=[];refresh()}
-function refresh(){renderProducts();renderCart()}
-function renderCart(){
- document.getElementById('cart').innerHTML=cart.map(c=>`<div class="cart-row"><span>${products[c.i].name}</span><span class="cart-qty"><button onclick="changeQty(${c.i},-1)">−</button><strong>${c.qty}</strong><button onclick="add(${c.i})">+</button></span><span>${products[c.i].price*c.qty} جنيه <button onclick="removeItem(${c.i})">حذف</button></span></div>`).join('')||'<p>السلة فارغة</p>';
-const cartSubtotal=cart.reduce((s,c)=>s+products[c.i].price*c.qty,0);
-const cartDelivery=cartSubtotal<100?10:0;
-document.getElementById('total').textContent='المنتجات: '+cartSubtotal+' جنيه | التوصيل: '+(cartDelivery?cartDelivery+' جنيه':'مجاني')+' | الإجمالي: '+(cartSubtotal+cartDelivery)+' جنيه';
- 
-}
-function sendOrder(){
- if(!cart.length){alert('أضف منتجات للسلة أولًا');return}
-const subtotal=cart.reduce((s,c)=>s+products[c.i].price*c.qty,0);
-const deliveryFee=subtotal<100?10:0;
-const finalTotal=subtotal+deliveryFee;
- 
-  let msg='طلب تجريبي من متجر هايبر المطرية\n'+cart.map(c=>`${products[c.i].name} × ${c.qty} = ${products[c.i].price*c.qty} جنيه`).join('\n')+'\nالإجمالي: '+cart.reduce((s,c)=>s+products[c.i].price*c.qty,0)+' جنيه\nيرجى تأكيد الأسعار والتوافر والتوصيل.';
-const name = document.getElementById('customerName').value.trim();
-const phone = document.getElementById('customerPhone').value.trim();
-const address = document.getElementById('customerAddress').value.trim();
-const notes = document.getElementById('customerNotes').value.trim();
-if (!name || !/^(?:0|\+20|0020)1[0125][0-9]{8}$/.test(phone) || !address) {
-  alert('من فضلك أدخل الاسم ورقم موبايل مصري صحيح والعنوان');
-  return;
-}
-msg = msg.replace(/الإجمالي:\s*\d+(?:\.\d+)? جنيه/, 'إجمالي المنتجات: '+subtotal+' جنيه');
-msg += '\nمصاريف التوصيل: '+(deliveryFee ? deliveryFee+' جنيه' : 'مجاني')+'\nالإجمالي النهائي: '+finalTotal+' جنيه';
-localStorage.setItem('customerName', name);
-localStorage.setItem('customerPhone', phone);
-localStorage.setItem('customerAddress', address);
-
-  msg += '\nاسم العميل: ' + name + '\nالموبايل: ' + phone + '\nالعنوان: ' + address + (notes ? '\nملاحظات: ' + notes : ''); 
-  window.open('https://wa.me/201222203202?text='+encodeURIComponent(msg),'_blank');
-}
-refresh();
- const SUPABASE_URL = 'https://mysycmmwpzgvyevclwvn.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_3Mv4NoJU8kb4ffL2b6rYvA_DSAtOrp3';
-  async function loadProducts() {
-  try {
-    const response = await fetch(
-      SUPABASE_URL + '/rest/v1/products?select=*&is_active=eq.true&order=id.asc',
-      {
-        headers: {
-          apikey: SUPABASE_KEY
-        }
-      }
-    );
-
-    if (!response.ok) throw new Error('تعذر تحميل المنتجات');
-
-    const data = await response.json();
-    if (!data.length) return;
-
-    products.splice(0, products.length, ...data.map(p => ({
-      name: p.name,
-      
-category_id: p.category_id,
-      subcategory_id: p.subcategory_id,
-
-      price: Number(p.price),
-      image: p.image_url || ''
-    })));
-
-    cart = [];
-    refresh();
-  } catch (error) {
-  alert('Supabase error: ' + error.message);
-  }
-}
-
-
-
-
-async function loadCategories() {
-  try {
-    const response = await fetch(
-      SUPABASE_URL + '/rest/v1/categories?select=id,name&is_active=eq.true&order=id.asc',
-      { headers: { apikey: SUPABASE_KEY } }
-    );
-
-    if (!response.ok) throw new Error('تعذر تحميل الأقسام');
-
-    const categories = await response.json();
-    const container = document.getElementById('categories');
-
-    container.innerHTML = categories.map(c =>
-      `<button type="button" onclick="selectCategory(${Number(c.id)})">${c.name}</button>`
-    ).join(' ');
-
-  } catch (error) {
-    console.error('Categories error:', error);
-  }
-}
-
-function selectCategory(id) {
-  selectedCategory = selectedCategory === id ? null : id;
-  selectedSubcategory = null;
-  showSubcategories();
-  renderProducts();
-}
-  
-let subcategories = [];
-
-async function loadSubcategories() {
-  try {
-    const response = await fetch(
-      SUPABASE_URL + '/rest/v1/subcategories?select=id,name,category_id&order=id.asc',
-      { headers: { apikey: SUPABASE_KEY } }
-    );
-    if (!response.ok) throw new Error('تعذر تحميل الأقسام الفرعية');
-    subcategories = await response.json();
-
-    let container = document.getElementById('subcategories');
-    if (!container) {
-      container = document.createElement('div');
-      container.id = 'subcategories';
-      document.getElementById('categories').after(container);
-    }
-    showSubcategories();
-  } catch (error) {
-    console.error('Subcategories error:', error);
-  }
-}
-
-function showSubcategories() {
-  const container = document.getElementById('subcategories');
-  if (!container) return;
-
-  container.innerHTML = selectedCategory === null ? '' :
-    subcategories
-      .filter(s => Number(s.category_id) === Number(selectedCategory))
-      .map(s => `<button type="button" onclick="selectSubcategory(${Number(s.id)})">${s.name}</button>`)
-      .join(' ');
-}
-
-function selectSubcategory(id) {
-  selectedSubcategory = selectedSubcategory === id ? null : id;
-  renderProducts();
-}
-
-
-loadCategories();
-loadSubcategories();
-  loadProducts();
-</script>
-</body>
-</html>
+function renderCategories(){document.getElementById('categories').innerHTML=categories.map(c=>{const id=Number(c.id),active=selectedCategory===id;const children=active?`<div class="subcategory-list">${subcategories.filter(s=>Number(s.category_id)===id).map(s=>`<button type="button" class="subcategory-button ${selectedSubcategory===Number(s.id)?'active':''}" onclick="selectSubcategory(${Number(s.id)})">${s.name}</button>`).join('')}</div>`:'';return `<div class="category-group"><button type="button" class="category-main ${active?'active':''}" onclick="selectCategory(${id})">${c.name}</button>${children}</div>`}).join('');}
+function selectCategory(id){selectedCategory=selectedCategory===id?null:id;selectedSubcategory=null;renderCategories();renderProducts();}
+function selectSubcategory(id){selectedSubcategory=selectedSubcategory===id?null:id;renderCategories();renderProducts();}
+function add(i){const c=cart.find(x=>x.i===i);if(c)c.qty++;else cart.push({i,qty:1});refresh();}
+function changeQty(i,delta){const c=cart.find(x=>x.i===i);if(!c)return;c.qty+=delta;if(c.qty<=0)cart=cart.filter(x=>x.i!==i);refresh();}
+function removeItem(i){cart=cart.filter(x=>x.i!==i);refresh();}
+function clearCart(){cart=[];refresh();}
+function refresh(){renderProducts();renderCart();}
+function renderCart(){document.getElementById('cart').innerHTML=cart.map(c=>`<div class="cart-row"><span>${products[c.i].name}</span><span class="cart-qty"><button onclick="changeQty(${c.i},-1)">−</button><strong>${c.qty}</strong><button onclick="add(${c.i})">+</button></span><span>${products[c.i].price*c.qty} جنيه <button onclick="removeItem(${c.i})">حذف</button></span></div>`).join('')||'<p>السلة فارغة</p>';const subtotal=cart.reduce((s,c)=>s+products[c.i].price*c.qty,0),delivery=subtotal<100?10:0;document.getElementById('total').textContent='المنتجات: '+subtotal+' جنيه | التوصيل: '+(delivery?delivery+' جنيه':'مجاني')+' | الإجمالي: '+(subtotal+delivery)+' جنيه';}
+function sendOrder(){if(!cart.length){alert('أضف منتجات للسلة أولًا');return;}const name=document.getElementById('customerName').value.trim(),phone=document.getElementById('customerPhone').value.trim(),address=document.getElementById('customerAddress').value.trim(),notes=document.getElementById('customerNotes').value.trim();if(!name||!/^(?:0|\+20|0020)1[0125][0-9]{8}$/.test(phone)||!address){alert('من فضلك أدخل الاسم ورقم موبايل مصري صحيح والعنوان');return;}const subtotal=cart.reduce((s,c)=>s+products[c.i].price*c.qty,0),delivery=subtotal<100?10:0;let msg='طلب تجريبي من متجر هايبر المطرية\n'+cart.map(c=>`${products[c.i].name} × ${c.qty} = ${products[c.i].price*c.qty} جنيه`).join('\n')+'\nإجمالي المنتجات: '+subtotal+' جنيه\nمصاريف التوصيل: '+(delivery?delivery+' جنيه':'مجاني')+'\nالإجمالي النهائي: '+(subtotal+delivery)+' جنيه\nيرجى تأكيد الأسعار والتوافر والتوصيل.'+'\nاسم العميل: '+name+'\nالموبايل: '+phone+'\nالعنوان: '+address+(notes?'\nملاحظات: '+notes:'');localStorage.setItem('customerName',name);localStorage.setItem('customerPhone',phone);localStorage.setItem('customerAddress',address);window.open('https://wa.me/201222203202?text='+encodeURIComponent(msg),'_blank');}
+async function fetchTable(path){const r=await fetch(SUPABASE_URL+'/rest/v1/'+path,{headers:{apikey:SUPABASE_KEY}});if(!r.ok)throw Error('HTTP '+r.status);return r.json();}
+async function loadCategories(){try{categories=await fetchTable('categories?select=id,name&is_active=eq.true&order=id.asc');renderCategories();}catch(e){console.error('Categories error:',e);}}
+async function loadSubcategories(){try{subcategories=await fetchTable('subcategories?select=id,name,category_id&order=id.asc');renderCategories();}catch(e){console.error('Subcategories error:',e);}}
+async function loadProducts(){try{const data=await fetchTable('products?select=*&is_active=eq.true&order=id.asc');if(!data.length)return;products.splice(0,products.length,...data.map(p=>({name:p.name,category_id:p.category_id,subcategory_id:p.subcategory_id,price:Number(p.price),image:p.image_url||''})));cart=[];refresh();}catch(e){console.error('Products error:',e);}}
+refresh();loadCategories();loadSubcategories();loadProducts();
+</script></body></html>
