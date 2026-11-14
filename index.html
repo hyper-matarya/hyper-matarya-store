@@ -10,7 +10,7 @@
 <body>
 <header><h1>هايبر المطرية</h1><small>متجرك قريب منك على مدار 24 ساعة</small></header>
 <main class="wrap">
-<section class="hero"><h2>كل احتياجات بيتك في مكان واحد</h2><p>التوصيل داخل المطرية فقط. مجاني من 100 جنيه، وأقل من 100 جنيه برسوم 10 جنيه.</p><p class="hint">الأوزان المطلوبة تقديرية؛ الوزن الفعلي والسعر النهائي يتحددان بعد الوزن على الميزان.</p><input id="search" placeholder="ابحث عن منتج..." aria-label="ابحث عن منتج" oninput="searchProducts()"></section>
+<section class="hero"><h2>كل احتياجات بيتك في مكان واحد</h2><p>التوصيل داخل المطرية فقط. العصافرة برسوم 20 جنيهًا، وباقي المناطق مجاني من 100 جنيه، وأقل من 100 جنيه برسوم 10 جنيه.</p><p class="hint">الأوزان المطلوبة تقديرية؛ الوزن الفعلي والسعر النهائي يتحددان بعد الوزن على الميزان.</p><input id="search" placeholder="ابحث عن منتج..." aria-label="ابحث عن منتج" oninput="searchProducts()"></section>
 <h2>المنتجات</h2><p class="hint">الأسعار والتوافر يخضعان لتأكيد الهايبر. منتجات الكيلو تُحسب تقديريًا، والسعر النهائي بعد الوزن.</p>
 <div id="categories"></div><div id="products" class="grid"></div>
 <section class="cart"><h2>سلة المشتريات</h2><div id="cart"></div><h3 id="total" aria-live="polite"></h3></section>
@@ -18,7 +18,7 @@
 <input id="customerName" placeholder="اسم العميل" autocomplete="name">
 <input id="customerPhone" type="tel" inputmode="tel" placeholder="رقم الموبايل" autocomplete="tel">
 <label for="customerArea">منطقة التوصيل داخل المطرية</label>
-<select id="customerArea" required><option value="">اختر منطقة التوصيل</option><option value="العقبيين">العقبيين</option><option value="العلادية">العلادية</option><option value="الغصنة">الغصنة</option><option value="البر التاني">البر التاني</option><option value="وسط المطرية">وسط المطرية</option><option value="منطقة أخرى داخل المطرية">منطقة أخرى داخل المطرية (تحتاج تأكيد)</option></select>
+<select id="customerArea" required><option value="">اختر منطقة التوصيل</option><option value="العقبيين">العقبيين</option><option value="العلادية">العلادية</option><option value="الغصنة">الغصنة</option><option value="البر التاني">البر التاني</option><option value="العصافرة">العصافرة (رسوم التوصيل 20 جنيهًا)</option><option value="منطقة أخرى داخل المطرية">منطقة أخرى داخل المطرية (تحتاج تأكيد)</option></select>
 <input id="customerAddress" placeholder="العنوان بالتفصيل داخل المطرية">
 <textarea id="customerNotes" placeholder="ملاحظات إضافية (اختياري)"></textarea>
 <p class="hint">إرسال الطلب عبر واتساب لا يعني تأكيده. سيتم تأكيد الأسعار والتوافر والعنوان مع خدمة العملاء.</p>
@@ -36,7 +36,7 @@ const products=[
 {name:'بن هايبر المطرية 50 جم',price:30},{name:'بن هايبر المطرية 100 جم',price:55},{name:'بن هايبر المطرية 250 جم',price:135},{name:'دبس رمان يمامة 330 مل',price:100},{name:'نسكافيه كلاسيك 190 جم',price:330},{name:'حليب جهينة 1.5 لتر',price:70,image:'https://mysycmmwpzgvyevclwvn.supabase.co/storage/v1/object/public/product-images/file_000000007cdc81f5ab02d8cd9e136b41.png'},{name:'حليب بخيره نصف لتر',price:25},{name:'حليب المراعي 1.5 لتر',price:75},{name:'حليب المراعي 1 لتر',price:50}];
 const $=id=>document.getElementById(id);
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-['customerName','customerPhone','customerAddress','customerArea'].forEach(id=>{const el=$(id);try{el.value=localStorage.getItem(id)||'';}catch(e){}el.addEventListener('input',()=>{try{localStorage.setItem(id,el.value);}catch(e){}});});
+['customerName','customerPhone','customerAddress','customerArea'].forEach(id=>{const el=$(id);try{el.value=localStorage.getItem(id)||'';}catch(e){}el.addEventListener('input',()=>{try{localStorage.setItem(id,el.value);}catch(e){}});if(id==='customerArea')el.addEventListener('change',()=>{try{localStorage.setItem(id,el.value);}catch(e){}refresh();});});
 function getQty(i){return cart.find(c=>c.i===i)?.qty||0;}
 function isWeightProduct(p){return p.unit==='kg';}
 function money(value){return Number(value||0).toLocaleString('ar-EG',{minimumFractionDigits:0,maximumFractionDigits:2});}
@@ -54,18 +54,18 @@ function renderProducts(){
   const weight=isWeightProduct(p);
   const priceText=weight?money(p.price)+' جنيه / كيلو':money(p.price)+' جنيه';
   const qtyText=weight?requestedWeightLabel(p,getQty(p.i)):'الكمية: '+getQty(p.i);
-  return '<article class="item">'+(p.image?'<img src="'+escapeHtml(p.image)+'" alt="'+escapeHtml(p.name)+'" style="width:100%;height:150px;object-fit:contain;margin-bottom:12px">':'')+'<h3>'+escapeHtml(p.name)+'</h3><div class="price">'+priceText+'</div>'+(weight?'<div class="hint">الوزن والسعر النهائيان بعد الميزان</div>':'')+'<div class="qty-controls"><button class="qty-btn" onclick="add('+p.i+')">+</button><span class="qty-number">'+qtyText+'</span><button class="qty-btn" onclick="changeQty('+p.i+',-1)">−</button></div></article>';
+  return '<article class="item">'+(p.image?'<img src="'+escapeHtml(p.image)+'" alt="'+escapeHtml(p.name)+'" style="width:100%;height:150px;object-fit:contain;margin-bottom:12px">':'')+'<h3>'+escapeHtml(p.name)+'</h3><div class="price">'+priceText+'</div>'+(weight?'<div class="hint">كل ضغطة = ١٢٥ جم تقديريًا؛ الوزن والسعر النهائيان بعد الميزان</div>':'')+'<div class="qty-controls"><button class="qty-btn" onclick="add('+p.i+')">+</button><span class="qty-number">'+qtyText+'</span><button class="qty-btn" onclick="changeQty('+p.i+',-1)">−</button></div></article>';
  }).join('')||'<p>لا توجد نتائج</p>';
 }
 function renderCategories(){$('categories').innerHTML=categories.map(c=>{const id=Number(c.id),active=selectedCategory===id;const children=active?`<div class="subcategory-list">${subcategories.filter(s=>Number(s.category_id)===id).map(s=>`<button type="button" class="subcategory-button ${selectedSubcategory===Number(s.id)?'active':''}" onclick="selectSubcategory(${Number(s.id)})">${escapeHtml(s.name)}</button>`).join('')}</div>`:'';return `<div class="category-group"><button type="button" class="category-main ${active?'active':''}" onclick="selectCategory(${id})">${escapeHtml(c.name)}</button>${children}</div>`;}).join('');}
 function selectCategory(id){selectedCategory=selectedCategory===id?null:id;selectedSubcategory=null;renderCategories();renderProducts();}
 function selectSubcategory(id){selectedSubcategory=selectedSubcategory===id?null:id;renderCategories();renderProducts();}
-function add(i){const p=products[i],step=isWeightProduct(p)?0.25:1,c=cart.find(x=>x.i===i);if(c)c.qty=Number((c.qty+step).toFixed(3));else cart.push({i,qty:step});refresh();}
-function changeQty(i,delta){const c=cart.find(x=>x.i===i);if(!c)return;const p=products[i],step=isWeightProduct(p)?0.25:1;c.qty=Number((c.qty+delta*step).toFixed(3));if(c.qty<=0)cart=cart.filter(x=>x.i!==i);refresh();}
+function add(i){const p=products[i],step=isWeightProduct(p)?0.125:1,c=cart.find(x=>x.i===i);if(c)c.qty=Number((c.qty+step).toFixed(3));else cart.push({i,qty:step});refresh();}
+function changeQty(i,delta){const c=cart.find(x=>x.i===i);if(!c)return;const p=products[i],step=isWeightProduct(p)?0.125:1;c.qty=Number((c.qty+delta*step).toFixed(3));if(c.qty<=0)cart=cart.filter(x=>x.i!==i);refresh();}
 function removeItem(i){cart=cart.filter(x=>x.i!==i);refresh();}
 function clearCart(){cart=[];refresh();}
 function refresh(){renderProducts();renderCart();}
-function totals(){const subtotal=Math.round(cart.reduce((s,c)=>s+Number(products[c.i].price)*c.qty,0)*100)/100;const delivery=subtotal<100?10:0;return {subtotal,delivery,total:subtotal+delivery};}
+function totals(){const subtotal=Math.round(cart.reduce((s,c)=>s+Number(products[c.i].price)*c.qty,0)*100)/100;const area=$('customerArea')?.value||'';const delivery=area==='العصافرة'?20:(subtotal<100?10:0);return {subtotal,delivery,total:subtotal+delivery};}
 function renderCart(){
  $('cart').innerHTML=cart.map(c=>{
   const p=products[c.i],weight=isWeightProduct(p),line=Math.round(Number(p.price)*c.qty*100)/100;
