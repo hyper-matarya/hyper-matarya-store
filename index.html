@@ -10,8 +10,8 @@
 <body>
 <header><h1>هايبر المطرية</h1><small>متجرك قريب منك على مدار 24 ساعة</small></header>
 <main class="wrap">
-<section class="hero"><h2>كل احتياجات بيتك في مكان واحد</h2><p>التوصيل داخل المطرية فقط. مجاني من 100 جنيه، وأقل من 100 جنيه برسوم 10 جنيه.</p><input id="search" placeholder="ابحث عن منتج..." aria-label="ابحث عن منتج" oninput="searchProducts()"></section>
-<h2>المنتجات</h2><p class="hint">الأسعار والتوافر يخضعان لتأكيد الهايبر عند استلام الطلب.</p>
+<section class="hero"><h2>كل احتياجات بيتك في مكان واحد</h2><p>التوصيل داخل المطرية فقط. مجاني من 100 جنيه، وأقل من 100 جنيه برسوم 10 جنيه.</p><p class="hint">الأوزان المطلوبة تقديرية؛ الوزن الفعلي والسعر النهائي يتحددان بعد الوزن على الميزان.</p><input id="search" placeholder="ابحث عن منتج..." aria-label="ابحث عن منتج" oninput="searchProducts()"></section>
+<h2>المنتجات</h2><p class="hint">الأسعار والتوافر يخضعان لتأكيد الهايبر. منتجات الكيلو تُحسب تقديريًا، والسعر النهائي بعد الوزن.</p>
 <div id="categories"></div><div id="products" class="grid"></div>
 <section class="cart"><h2>سلة المشتريات</h2><div id="cart"></div><h3 id="total" aria-live="polite"></h3></section>
 <section class="cart"><h2>بيانات التوصيل</h2>
@@ -38,28 +38,53 @@ const $=id=>document.getElementById(id);
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 ['customerName','customerPhone','customerAddress','customerArea'].forEach(id=>{const el=$(id);try{el.value=localStorage.getItem(id)||'';}catch(e){}el.addEventListener('input',()=>{try{localStorage.setItem(id,el.value);}catch(e){}});});
 function getQty(i){return cart.find(c=>c.i===i)?.qty||0;}
+function isWeightProduct(p){return p.unit==='kg';}
+function money(value){return Number(value||0).toLocaleString('ar-EG',{minimumFractionDigits:0,maximumFractionDigits:2});}
+function requestedWeightLabel(p,qty){
+ if(!isWeightProduct(p))return String(qty);
+ if(Number(qty)<=0)return 'لم يُحدد وزن بعد';
+ const grams=Math.round(Number(qty)*1000);
+ return grams>=1000&&grams%1000===0?(grams/1000)+' كيلو ('+grams+' جم تقديري)':grams+' جم تقديري';
+}
 function searchProducts(){if($('search').value.trim()){selectedCategory=null;selectedSubcategory=null;renderCategories();}renderProducts();}
-function renderProducts(){const q=$('search').value.trim();const filtered=products.map((p,i)=>({...p,i})).filter(p=>p.name.includes(q)).filter(p=>selectedCategory===null||Number(p.category_id)===selectedCategory).filter(p=>selectedSubcategory===null||Number(p.subcategory_id)===selectedSubcategory);$('products').innerHTML=filtered.map(p=>`<article class="item">${p.image?`<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" style="width:100%;height:150px;object-fit:contain;margin-bottom:12px">`:''}<h3>${escapeHtml(p.name)}</h3><div class="price">${p.price} جنيه</div><div class="qty-controls"><button class="qty-btn" onclick="add(${p.i})">+</button><span class="qty-number">${getQty(p.i)}</span><button class="qty-btn" onclick="changeQty(${p.i},-1)">−</button></div></article>`).join('')||'<p>لا توجد نتائج</p>';}
+function renderProducts(){
+ const q=$('search').value.trim();
+ const filtered=products.map((p,i)=>({...p,i})).filter(p=>p.name.includes(q)).filter(p=>selectedCategory===null||Number(p.category_id)===selectedCategory).filter(p=>selectedSubcategory===null||Number(p.subcategory_id)===selectedSubcategory);
+ $('products').innerHTML=filtered.map(p=>{
+  const weight=isWeightProduct(p);
+  const priceText=weight?money(p.price)+' جنيه / كيلو':money(p.price)+' جنيه';
+  const qtyText=weight?requestedWeightLabel(p,getQty(p.i)):'الكمية: '+getQty(p.i);
+  return '<article class="item">'+(p.image?'<img src="'+escapeHtml(p.image)+'" alt="'+escapeHtml(p.name)+'" style="width:100%;height:150px;object-fit:contain;margin-bottom:12px">':'')+'<h3>'+escapeHtml(p.name)+'</h3><div class="price">'+priceText+'</div>'+(weight?'<div class="hint">الوزن والسعر النهائيان بعد الميزان</div>':'')+'<div class="qty-controls"><button class="qty-btn" onclick="add('+p.i+')">+</button><span class="qty-number">'+qtyText+'</span><button class="qty-btn" onclick="changeQty('+p.i+',-1)">−</button></div></article>';
+ }).join('')||'<p>لا توجد نتائج</p>';
+}
 function renderCategories(){$('categories').innerHTML=categories.map(c=>{const id=Number(c.id),active=selectedCategory===id;const children=active?`<div class="subcategory-list">${subcategories.filter(s=>Number(s.category_id)===id).map(s=>`<button type="button" class="subcategory-button ${selectedSubcategory===Number(s.id)?'active':''}" onclick="selectSubcategory(${Number(s.id)})">${escapeHtml(s.name)}</button>`).join('')}</div>`:'';return `<div class="category-group"><button type="button" class="category-main ${active?'active':''}" onclick="selectCategory(${id})">${escapeHtml(c.name)}</button>${children}</div>`;}).join('');}
 function selectCategory(id){selectedCategory=selectedCategory===id?null:id;selectedSubcategory=null;renderCategories();renderProducts();}
 function selectSubcategory(id){selectedSubcategory=selectedSubcategory===id?null:id;renderCategories();renderProducts();}
-function add(i){const c=cart.find(x=>x.i===i);if(c)c.qty++;else cart.push({i,qty:1});refresh();}
-function changeQty(i,delta){const c=cart.find(x=>x.i===i);if(!c)return;c.qty+=delta;if(c.qty<=0)cart=cart.filter(x=>x.i!==i);refresh();}
+function add(i){const p=products[i],step=isWeightProduct(p)?0.25:1,c=cart.find(x=>x.i===i);if(c)c.qty=Number((c.qty+step).toFixed(3));else cart.push({i,qty:step});refresh();}
+function changeQty(i,delta){const c=cart.find(x=>x.i===i);if(!c)return;const p=products[i],step=isWeightProduct(p)?0.25:1;c.qty=Number((c.qty+delta*step).toFixed(3));if(c.qty<=0)cart=cart.filter(x=>x.i!==i);refresh();}
 function removeItem(i){cart=cart.filter(x=>x.i!==i);refresh();}
 function clearCart(){cart=[];refresh();}
 function refresh(){renderProducts();renderCart();}
-function totals(){const subtotal=cart.reduce((s,c)=>s+Number(products[c.i].price)*c.qty,0);const delivery=subtotal<100?10:0;return {subtotal,delivery,total:subtotal+delivery};}
-function renderCart(){$('cart').innerHTML=cart.map(c=>`<div class="cart-row"><span>${escapeHtml(products[c.i].name)}</span><span class="cart-qty"><button onclick="changeQty(${c.i},-1)">−</button><strong>${c.qty}</strong><button onclick="add(${c.i})">+</button></span><span>${products[c.i].price*c.qty} جنيه <button onclick="removeItem(${c.i})">حذف</button></span></div>`).join('')||'<p>السلة فارغة</p>';const t=totals();$('total').textContent='المنتجات: '+t.subtotal+' جنيه | التوصيل: '+(t.delivery?t.delivery+' جنيه':'مجاني')+' | الإجمالي: '+t.total+' جنيه';}
+function totals(){const subtotal=Math.round(cart.reduce((s,c)=>s+Number(products[c.i].price)*c.qty,0)*100)/100;const delivery=subtotal<100?10:0;return {subtotal,delivery,total:subtotal+delivery};}
+function renderCart(){
+ $('cart').innerHTML=cart.map(c=>{
+  const p=products[c.i],weight=isWeightProduct(p),line=Math.round(Number(p.price)*c.qty*100)/100;
+  return '<div class="cart-row"><span>'+escapeHtml(p.name)+(weight?'<br><small>'+requestedWeightLabel(p,c.qty)+'</small>':'')+'</span><span class="cart-qty"><button onclick="changeQty('+c.i+',-1)">−</button><strong>'+(weight?requestedWeightLabel(p,c.qty):c.qty)+'</strong><button onclick="add('+c.i+')">+</button></span><span>'+money(line)+' جنيه <button onclick="removeItem('+c.i+')">حذف</button></span></div>';
+ }).join('')||'<p>السلة فارغة</p>';
+ const t=totals(),estimated=cart.some(c=>isWeightProduct(products[c.i]));
+ $('total').textContent=(estimated?'إجمالي المنتجات التقديري: ':'المنتجات: ')+money(t.subtotal)+' جنيه | التوصيل: '+(t.delivery?money(t.delivery)+' جنيه':'مجاني')+' | '+(estimated?'الإجمالي التقديري: ':'الإجمالي: ')+money(t.total)+' جنيه';
+}
 function setStatus(message){$('orderStatus').textContent=message;}
 async function sendOrder(){
  if(sending)return;
  if(!cart.length){alert('أضف منتجات للسلة أولًا');return;}
  const name=$('customerName').value.trim(),phone=$('customerPhone').value.trim(),area=$('customerArea').value,address=$('customerAddress').value.trim(),notes=$('customerNotes').value.trim();
  if(!name||!/^(?:0|\+20|0020)1[0125][0-9]{8}$/.test(phone)||!area||!address){alert('من فضلك أدخل الاسم ورقم موبايل مصري صحيح ومنطقة التوصيل والعنوان');return;}
- const t=totals(),items=cart.map(c=>({name:products[c.i].name,quantity:c.qty,unit_price:Number(products[c.i].price),line_total:Number(products[c.i].price)*c.qty}));
+ const t=totals(),items=cart.map(c=>{const p=products[c.i],weight=isWeightProduct(p),grams=weight?Math.round(c.qty*1000):null;return {name:p.name,quantity:weight?requestedWeightLabel(p,c.qty):c.qty,requested_quantity_kg:weight?c.qty:null,requested_grams:grams,unit:weight?'kg':(p.unit||'piece'),unit_price:Number(p.price),line_total:Math.round(Number(p.price)*c.qty*100)/100,price_is_estimated:weight};});
  const requestId=crypto.randomUUID();
  const payload={request_id:requestId,customer_name:name,customer_phone:phone,customer_area:area,customer_address:address,customer_notes:notes,items,subtotal:t.subtotal,delivery_fee:t.delivery,total:t.total,status:'pending_whatsapp'};
- const message='طلب من متجر هايبر المطرية\nرقم الطلب: '+requestId+'\n'+items.map(x=>`${x.name} × ${x.quantity} = ${x.line_total} جنيه`).join('\n')+'\nإجمالي المنتجات: '+t.subtotal+' جنيه\nمصاريف التوصيل: '+(t.delivery?t.delivery+' جنيه':'مجاني')+'\nالإجمالي النهائي: '+t.total+' جنيه\nاسم العميل: '+name+'\nالموبايل: '+phone+'\nالمنطقة: '+area+'\nالعنوان: '+address+(notes?'\nملاحظات: '+notes:'')+'\nيرجى تأكيد الأسعار والتوافر والتوصيل.';
+ const hasWeight=items.some(x=>x.price_is_estimated);
+ const message='طلب من متجر هايبر المطرية\nرقم الطلب: '+requestId+'\n'+items.map(x=>x.name+' × '+x.quantity+' = '+money(x.line_total)+' جنيه'+(x.price_is_estimated?' (تقديري، والنهائي بعد الوزن)':'')).join('\n')+'\n'+(hasWeight?'إجمالي المنتجات التقديري: ':'إجمالي المنتجات: ')+money(t.subtotal)+' جنيه\nمصاريف التوصيل: '+(t.delivery?money(t.delivery)+' جنيه':'مجاني')+'\n'+(hasWeight?'الإجمالي التقديري قبل الوزن النهائي: ':'الإجمالي النهائي: ')+money(t.total)+' جنيه\nاسم العميل: '+name+'\nالموبايل: '+phone+'\nالمنطقة: '+area+'\nالعنوان: '+address+(notes?'\nملاحظات: '+notes:'')+'\nيرجى تأكيد الوزن الفعلي والسعر النهائي والتوافر والتوصيل.';
  // افتح نافذة واتساب مباشرة من ضغطة المستخدم لتجنب حظر النوافذ المنبثقة على الموبايل.
  const whatsappWindow=window.open('about:blank','_blank');
  sending=true;$('sendButton').disabled=true;setStatus('جارٍ تسجيل الطلب...');
@@ -75,7 +100,7 @@ async function sendOrder(){
 async function fetchTable(path){const r=await fetch(SUPABASE_URL+'/rest/v1/'+path,{headers:{apikey:SUPABASE_KEY}});if(!r.ok)throw Error('HTTP '+r.status);return r.json();}
 async function loadCategories(){try{categories=await fetchTable('categories?select=id,name&is_active=eq.true&order=id.asc');renderCategories();}catch(e){console.error('Categories error:',e);}}
 async function loadSubcategories(){try{subcategories=await fetchTable('subcategories?select=id,name,category_id&order=id.asc');renderCategories();}catch(e){console.error('Subcategories error:',e);}}
-async function loadProducts(){try{const data=await fetchTable('products?select=*&is_active=eq.true&order=id.asc');if(!data.length)return;products.splice(0,products.length,...data.map(p=>({name:p.name,category_id:p.category_id,subcategory_id:p.subcategory_id,price:Number(p.price),image:p.image_url||''})));cart=[];refresh();}catch(e){console.error('Products error:',e);}}
+async function loadProducts(){try{const data=await fetchTable('products?select=*&is_active=eq.true&order=id.asc');if(!data.length)return;products.splice(0,products.length,...data.map(p=>({name:p.name,category_id:p.category_id,subcategory_id:p.subcategory_id,price:Number(p.price),unit:p.unit||'piece',image:p.image_url||''})));cart=[];refresh();}catch(e){console.error('Products error:',e);}}
 refresh();loadCategories();loadSubcategories();loadProducts();
 </script>
 </body></html>
