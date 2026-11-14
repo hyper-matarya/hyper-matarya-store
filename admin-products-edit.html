@@ -61,7 +61,7 @@ for(const [itemIndex,item] of (Array.isArray(o.items)?o.items:[]).entries()){
     target.actual_grams=grams;target.actual_line_total=lineTotal;target.line_total=lineTotal;
     target.quantity=grams+' جم فعلي';target.quantity_display=target.quantity;target.price_is_estimated=false;
     const subtotal=Math.round(updatedItems.reduce((sum,x)=>sum+Number(x.actual_line_total??x.line_total??0),0)*100)/100;
-    const deliveryFee=subtotal<100?10:0,total=subtotal+deliveryFee;
+    const deliveryFee=o.customer_area==='العصافرة'?20:(subtotal<100?10:0),total=subtotal+deliveryFee;
     const token=await accessToken();
     const result=await request('/rest/v1/store_order_requests?request_id=eq.'+encodeURIComponent(o.request_id)+'&select=request_id,items,subtotal,delivery_fee,total',{method:'PATCH',headers:{...headers(token),'Prefer':'return=representation'},body:JSON.stringify({items:updatedItems,subtotal,delivery_fee:deliveryFee,total})});
     if(!Array.isArray(result)||result.length!==1)throw new Error('لم يتم تأكيد حفظ الوزن');
