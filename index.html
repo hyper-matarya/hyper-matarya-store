@@ -19,6 +19,14 @@
 @media(max-width:700px){#categories{grid-template-columns:repeat(3,minmax(0,1fr))}.category-photo{height:120px}}
 @media(max-width:520px){#categories{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.category-main{padding:8px;min-height:0}.category-photo{height:120px}.category-name{font-size:13px}}
 @media(max-width:350px){#categories{grid-template-columns:repeat(2,minmax(0,1fr))}.category-photo{height:100px}}
+
+/* Enlarged selected category photos without changing card dimensions */
+.category-photo-frame{display:block;width:100%;height:138px;overflow:hidden;border-radius:8px;background:#fff}
+.category-photo-frame .category-photo{width:100%;height:100%;object-fit:contain;transform-origin:center center}
+.category-photo.category-zoom-strong{transform:scale(1.18)}
+.category-photo.category-zoom-medium{transform:scale(1.10)}
+@media(max-width:700px){.category-photo-frame{height:120px}}
+@media(max-width:350px){.category-photo-frame{height:100px}}
 </style>
 </head>
 <body>
@@ -93,7 +101,7 @@ const categoryImageRules=[
 ];
 function categoryImage(name){const match=categoryImageRules.find(([pattern])=>pattern.test(String(name)));return match?'category-images/'+match[1]:'';}
 
-function renderCategories(){$('categories').innerHTML=categories.map(c=>{const id=Number(c.id),active=selectedCategory===id;const children=active?`<div class="subcategory-list">${subcategories.filter(s=>Number(s.category_id)===id).map(s=>`<button type="button" class="subcategory-button ${selectedSubcategory===Number(s.id)?'active':''}" onclick="selectSubcategory(${Number(s.id)})">${escapeHtml(s.name)}</button>`).join('')}</div>`:'';return `<div class="category-group ${active?'active':''}"><button type="button" class="category-main ${active?'active':''}" onclick="selectCategory(${id})">${categoryImage(c.name)?`<img class="category-photo" src="${categoryImage(c.name)}" alt="" loading="lazy" onerror="this.style.display='none'">`:``}<span class="category-name">${escapeHtml(c.name)}</span></button>${children}</div>`;}).join('');}
+function renderCategories(){$('categories').innerHTML=categories.map(c=>{const id=Number(c.id),active=selectedCategory===id;const children=active?`<div class="subcategory-list">${subcategories.filter(s=>Number(s.category_id)===id).map(s=>`<button type="button" class="subcategory-button ${selectedSubcategory===Number(s.id)?'active':''}" onclick="selectSubcategory(${Number(s.id)})">${escapeHtml(s.name)}</button>`).join('')}</div>`:'';return `<div class="category-group ${active?'active':''}"><button type="button" class="category-main ${active?'active':''}" onclick="selectCategory(${id})">${categoryImage(c.name)?`<span class="category-photo-frame"><img class="category-photo ${/grocery\.png|sweets-snacks\.png/.test(categoryImage(c.name))?'category-zoom-strong':/drinks\.png|sweets-chocolate\.png/.test(categoryImage(c.name))?'category-zoom-medium':''}" src="${categoryImage(c.name)}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'"></span>`:``}<span class="category-name">${escapeHtml(c.name)}</span></button>${children}</div>`;}).join('');}
 function selectCategory(id){selectedCategory=selectedCategory===id?null:id;selectedSubcategory=null;renderCategories();renderProducts();}
 function selectSubcategory(id){selectedSubcategory=selectedSubcategory===id?null:id;renderCategories();renderProducts();}
 function add(i){const p=products[i],step=isWeightProduct(p)?0.125:1,c=cart.find(x=>x.i===i);if(c)c.qty=Number((c.qty+step).toFixed(3));else cart.push({i,qty:step});refresh();}
