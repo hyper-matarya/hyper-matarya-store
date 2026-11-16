@@ -498,7 +498,11 @@ async function sendOrder(){
  const requestId=crypto.randomUUID();
  const payload={request_id:requestId,customer_name:name,customer_phone:phone,customer_area:area,customer_address:address,customer_notes:notes,items,subtotal:t.subtotal,delivery_fee:t.delivery,total:t.total,status:'pending_whatsapp'};
  const hasWeight=items.some(x=>x.price_is_estimated);
- const message='طلب من متجر هايبر المطرية\nرقم الطلب: '+requestId+'\n'+items.map(x=>x.name+' × '+x.quantity+' = '+money(x.line_total)+' جنيه'+(x.price_is_estimated?' (تقديري، والنهائي بعد الوزن)':'')).join('\n')+'\n'+(hasWeight?'إجمالي المنتجات التقديري: ':'إجمالي المنتجات: ')+money(t.subtotal)+' جنيه\nمصاريف التوصيل: '+(t.delivery?money(t.delivery)+' جنيه':'مجاني')+'\n'+(hasWeight?'الإجمالي التقديري قبل الوزن النهائي: ':'الإجمالي النهائي: ')+money(t.total)+' جنيه\nاسم العميل: '+name+'\nالموبايل: '+phone+'\nالمنطقة: '+area+'\nالعنوان: '+address+(notes?'\nملاحظات: '+notes:'')+'\nيرجى تأكيد الوزن الفعلي والسعر النهائي والتوافر والتوصيل.';
+ const nf=v=>Number(v||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2});
+ const shortId='#'+requestId.slice(0,8).toUpperCase();
+ let waDigits=phone.replace(/\D/g,'');if(waDigits.startsWith('0020'))waDigits=waDigits.slice(2);else if(waDigits.startsWith('0'))waDigits='20'+waDigits.slice(1);
+ const itemLines=items.map(x=>'• '+x.name+' × '+x.quantity+' = '+nf(x.line_total)+' جنيه'+(x.price_is_estimated?' (تقديري)':'')).join('\n');
+ const message='🛒 طلب جديد '+shortId+'\n\n👤 '+name+'\n📞 '+phone+'\nwa.me/'+waDigits+'\n📍 '+area+' - '+address+'\n\nالأصناف:\n'+itemLines+'\n\n🧾 '+(hasWeight?'المنتجات (تقديري): ':'المنتجات: ')+nf(t.subtotal)+' جنيه\n🚚 التوصيل: '+(t.delivery?nf(t.delivery)+' جنيه':'مجاني')+'\n💰 '+(hasWeight?'الإجمالي (تقديري قبل الوزن): ':'الإجمالي: ')+nf(t.total)+' جنيه'+(notes?'\n\n📝 ملاحظات: '+notes:'')+'\n\n⚠️ '+(hasWeight?'يرجى تأكيد الوزن الفعلي والسعر النهائي والتوافر والتوصيل.':'يرجى تأكيد التوافر والتوصيل.');
  // افتح نافذة واتساب مباشرة من ضغطة المستخدم لتجنب حظر النوافذ المنبثقة على الموبايل.
  const whatsappWindow=window.open('about:blank','_blank');
  sending=true;$('sendButton').disabled=true;setStatus('جارٍ تسجيل الطلب...');
