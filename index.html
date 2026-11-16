@@ -40,6 +40,47 @@
 #categories .category-photo[src$="/frozen-food.png"]{transform:scale(1.10)}
 @media(max-width:700px){#categories .category-main{height:196px;min-height:196px}}
 @media(max-width:350px){#categories .category-main{height:176px;min-height:176px}}
+
+
+/* Full-page category browsing: the home category grid is hidden on opening a section. */
+.category-detail[hidden],.category-cart-bar[hidden]{display:none!important}
+.category-detail{padding:6px 0 4px}
+.category-detail .detail-heading{display:flex;align-items:center;gap:12px;min-height:58px;margin:0 0 12px}
+.category-detail .detail-back{display:flex;align-items:center;justify-content:center;width:46px;height:46px;flex:0 0 46px;padding:0;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);font-size:28px;box-shadow:var(--shadow)}
+.category-detail .detail-heading h2{margin:0;flex:1;text-align:center;font-size:clamp(21px,4.8vw,27px);line-height:1.4;color:var(--ink)}
+.category-detail .detail-heading .detail-spacer{width:46px;flex:0 0 46px}
+.category-detail .category-tabs{display:flex;direction:rtl;gap:6px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;align-items:stretch;max-width:100%;border-bottom:1px solid var(--line);padding:0 0 4px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.category-detail .category-tabs button{display:block;flex:0 0 auto;min-height:45px;margin:0;padding:8px 13px 9px;background:transparent;color:var(--ink);border:0;border-bottom:3px solid transparent;border-radius:0;font-size:14px;white-space:nowrap}
+.category-detail .category-tabs button:hover{background:#f0f5f1}
+.category-detail .category-tabs button.active{color:var(--green-dark);font-weight:700;border-bottom-color:var(--green)}
+.product-photo-box{position:relative;width:100%;margin:0 auto 12px}
+.product-photo-box .product-img{margin:0 auto}
+.product-photo-box .no-product-image{display:none}
+.product-photo-box .no-product-image[hidden]{display:none!important}
+.quick-add{display:none}
+body.category-mode .site-header,body.category-mode .hero,body.category-mode .section-title,body.category-mode .products-note,body.category-mode #categories{display:none!important}
+body.category-mode .wrap{padding-top:10px;padding-bottom:104px}
+body.category-mode #products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:15px 0 25px}
+body.category-mode #products .item{display:flex;flex-direction:column;min-width:0;padding:12px;border-radius:15px;box-shadow:0 2px 10px rgba(20,60,36,.04)}
+body.category-mode #products .product-photo-box{height:160px;flex:0 0 160px;margin-bottom:9px;background:#fafbf9;border-radius:11px}
+body.category-mode #products .product-img{height:100%;width:100%;object-fit:contain;background:transparent}
+body.category-mode #products .no-product-image{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:#929d95;text-align:center;padding:10px}
+body.category-mode #products .quick-add{display:flex;align-items:center;justify-content:center;position:absolute;bottom:5px;left:5px;width:36px;height:36px;min-width:36px;min-height:36px;padding:0;border-radius:10px;background:var(--red);color:#fff;font-size:23px;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+body.category-mode #products .item h3{font-size:14px;line-height:1.6;margin:2px 0 8px;min-height:2.9em}
+body.category-mode #products .item .price{font-size:15px;margin-top:auto}
+body.category-mode #products .item .hint{font-size:11px;line-height:1.5;margin-top:5px}
+body.category-mode #products .qty-controls{gap:8px;margin-top:9px;justify-content:flex-start}
+body.category-mode #products .qty-controls:not(.has-qty){display:none}
+body.category-mode #products .qty-controls .qty-plus{display:none}
+body.category-mode #products .qty-controls .qty-btn{min-width:32px;min-height:32px;font-size:16px;border-radius:9px}
+body.category-mode #products .qty-controls .qty-number{font-size:12px;text-align:right}
+.category-cart-bar{display:none;position:fixed;bottom:calc(10px + env(safe-area-inset-bottom,0px));right:12px;left:12px;z-index:40;align-items:center;gap:12px;justify-content:space-between;max-width:1000px;margin:0 auto;padding:13px 18px;min-height:62px;background:var(--green-dark);color:#fff;border-radius:16px;border:1px solid #0b4d27;box-shadow:0 6px 24px rgba(0,0,0,.22);font-size:16px;font-weight:700}
+body.category-mode .category-cart-bar{display:flex}
+.category-cart-bar .cart-bar-count{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 9px;border-radius:9px;background:#fff;color:var(--green-dark);font-size:14px}
+.category-cart-bar .cart-bar-price{font-size:15px;white-space:nowrap}
+@media(max-width:900px){body.category-mode #products{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){body.category-mode #products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}body.category-mode #products .item{padding:10px}body.category-mode #products .product-photo-box{height:142px;flex-basis:142px}body.category-mode .wrap{padding-left:12px;padding-right:12px}}
+@media(max-width:350px){body.category-mode #products .product-photo-box{height:118px;flex-basis:118px}body.category-mode #products .item h3{font-size:13px}body.category-mode #products .price{font-size:13px}}
 </style>
 </head>
 <body>
@@ -47,6 +88,10 @@
 <main class="wrap">
 <section class="hero"><h2>كل احتياجات بيتك في مكان واحد</h2><p class="hint">الأوزان المطلوبة تقديرية؛ الوزن الفعلي والسعر النهائي يتحددان بعد الوزن على الميزان.</p><input id="search" placeholder="ابحث عن منتج..." aria-label="ابحث عن منتج" oninput="searchProducts()"></section>
 <h2 class="section-title">المنتجات</h2><p class="products-note">الأسعار والتوافر يخضعان لتأكيد الهايبر. منتجات الكيلو تُحسب تقديريًا، والسعر النهائي بعد الوزن.</p>
+<section id="categoryDetail" class="category-detail" hidden aria-label="تصفح منتجات القسم">
+  <div class="detail-heading"><button type="button" class="detail-back" onclick="closeCategory()" aria-label="العودة إلى الأقسام الرئيسية">&#8594;</button><h2 id="categoryTitle"></h2><span class="detail-spacer" aria-hidden="true"></span></div>
+  <nav id="categoryTabs" class="category-tabs" aria-label="الأقسام الفرعية"></nav>
+</section>
 <div id="categories"></div><div id="products" class="grid"></div>
 <section class="cart"><h2>سلة المشتريات</h2><div id="cart"></div><h3 id="total" aria-live="polite"></h3></section>
 <section class="cart"><h2>بيانات التوصيل</h2>
@@ -61,7 +106,11 @@
 <div class="actions"><button id="sendButton" type="button" onclick="sendOrder()">إرسال الطلب عبر واتساب</button><button type="button" onclick="clearCart()" style="background:#777">تفريغ السلة</button></div>
 <p class="status" id="orderStatus" role="status" aria-live="polite"></p>
 </section>
-</main><footer>هايبر المطرية — خدمة العملاء: <a href="https://wa.me/20122203202">01222203202</a></footer>
+</main>
+<button type="button" id="categoryCartBar" class="category-cart-bar" onclick="goToCategoryCart()" aria-label="عرض سلة المشتريات" hidden>
+ <span>عرض السلة</span><span class="cart-bar-count" id="categoryCartCount">0</span><span class="cart-bar-price" id="categoryCartPrice">0 جنيه</span>
+</button>
+<footer>هايبر المطرية — خدمة العملاء: <a href="https://wa.me/20122203202">01222203202</a></footer>
 <script>
 'use strict';
 const SUPABASE_URL='https://mysycmmwpzgvyevclwvn.supabase.co';
@@ -82,16 +131,22 @@ function requestedWeightLabel(p,qty){
  const grams=Math.round(Number(qty)*1000);
  return grams>=1000&&grams%1000===0?(grams/1000)+' كيلو ('+grams+' جم تقديري)':grams+' جم تقديري';
 }
-function searchProducts(){if($('search').value.trim()){selectedCategory=null;selectedSubcategory=null;renderCategories();}renderProducts();}
+function searchProducts(){
+ if($('search').value.trim()){
+   selectedCategory=null;selectedSubcategory=null;renderCategories();renderCategoryDetail();
+ }
+ renderProducts();
+}
 function renderProducts(){
- const q=$('search').value.trim();
- const filtered=products.map((p,i)=>({...p,i})).filter(p=>p.name.includes(q)).filter(p=>selectedCategory===null||Number(p.category_id)===selectedCategory).filter(p=>selectedSubcategory===null||Number(p.subcategory_id)===selectedSubcategory);
+ const query=$('search').value.trim();
+ const filtered=products.map((p,i)=>({...p,i})).filter(p=>p.name.includes(query)).filter(p=>selectedCategory===null||Number(p.category_id)===selectedCategory).filter(p=>selectedSubcategory===null||Number(p.subcategory_id)===selectedSubcategory);
  $('products').innerHTML=filtered.map(p=>{
-  const weight=isWeightProduct(p);
+  const weight=isWeightProduct(p),quantity=getQty(p.i);
   const priceText=weight?money(p.price)+' جنيه / كيلو':money(p.price)+' جنيه';
-  const qtyText=weight?requestedWeightLabel(p,getQty(p.i)):'الكمية: '+getQty(p.i);
-  return '<article class="item">'+(p.image?'<img class="product-img" src="'+escapeHtml(p.image)+'" alt="'+escapeHtml(p.name)+'" loading="lazy" decoding="async">':'')+'<h3>'+escapeHtml(p.name)+'</h3><div class="price">'+priceText+'</div>'+(weight?'<div class="hint">كل ضغطة = ١٢٥ جم تقديريًا؛ الوزن والسعر النهائيان بعد الميزان</div>':'')+'<div class="qty-controls"><button class="qty-btn" onclick="add('+p.i+')">+</button><span class="qty-number">'+qtyText+'</span><button class="qty-btn" onclick="changeQty('+p.i+',-1)">−</button></div></article>';
- }).join('')||'<p class="empty-results">لا توجد نتائج مطابقة. جرّب كلمة بحث أخرى.</p>';
+  const qtyText=weight?requestedWeightLabel(p,quantity):'الكمية: '+quantity;
+  const photo=p.image?`<img class="product-img" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="no-product-image" hidden>صورة المنتج غير متاحة</span>`:'<span class="no-product-image">صورة المنتج لم تُضف بعد</span>';
+  return '<article class="item"><div class="product-photo-box">'+photo+'<button type="button" class="quick-add" onclick="add('+p.i+')" aria-label="إضافة '+escapeHtml(p.name)+' للسلة">+</button></div><h3>'+escapeHtml(p.name)+'</h3><div class="price">'+priceText+'</div>'+(weight?'<div class="hint">كل ضغطة = ١٢٥ جم تقديريًا؛ الوزن والسعر النهائيان بعد الميزان</div>':'')+'<div class="qty-controls '+(quantity>0?'has-qty':'')+'"><button type="button" class="qty-btn qty-plus" onclick="add('+p.i+')">+</button><span class="qty-number">'+qtyText+'</span><button type="button" class="qty-btn" onclick="changeQty('+p.i+',-1)">−</button></div></article>';
+ }).join('')||'<p class="empty-results">'+(selectedCategory!==null?'لا توجد منتجات مضافة إلى هذا القسم حاليًا.':'لا توجد نتائج مطابقة. جرّب كلمة بحث أخرى.')+'</p>';
 }
 
 const categoryImageRules=[
@@ -115,9 +170,49 @@ const categoryImageRules=[
 ];
 function categoryImage(name){const match=categoryImageRules.find(([pattern])=>pattern.test(String(name)));return match?'category-images/'+match[1]:'';}
 
-function renderCategories(){$('categories').innerHTML=categories.map(c=>{const id=Number(c.id),active=selectedCategory===id;const children=active?`<div class="subcategory-list">${subcategories.filter(s=>Number(s.category_id)===id).map(s=>`<button type="button" class="subcategory-button ${selectedSubcategory===Number(s.id)?'active':''}" onclick="selectSubcategory(${Number(s.id)})">${escapeHtml(s.name)}</button>`).join('')}</div>`:'';return `<div class="category-group ${active?'active':''}"><button type="button" class="category-main ${active?'active':''}" onclick="selectCategory(${id})">${categoryImage(c.name)?`<span class="category-photo-frame"><img class="category-photo ${/grocery\.png|sweets-snacks\.png/.test(categoryImage(c.name))?'category-zoom-strong':/drinks\.png|sweets-chocolate\.png/.test(categoryImage(c.name))?'category-zoom-medium':''}" src="${categoryImage(c.name)}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'"></span>`:``}<span class="category-name">${escapeHtml(c.name)}</span></button>${children}</div>`;}).join('');}
-function selectCategory(id){selectedCategory=selectedCategory===id?null:id;selectedSubcategory=null;renderCategories();renderProducts();}
-function selectSubcategory(id){selectedSubcategory=selectedSubcategory===id?null:id;renderCategories();renderProducts();}
+function renderCategories(){
+ const container=$('categories');
+ container.innerHTML=categories.map(c=>{
+  const id=Number(c.id),image=categoryImage(c.name);
+  const imageMarkup=image?`<span class="category-photo-frame"><img class="category-photo ${/grocery\.png|sweets-snacks\.png/.test(image)?'category-zoom-strong':/drinks\.png|sweets-chocolate\.png/.test(image)?'category-zoom-medium':''}" src="${image}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'"></span>`:'';
+  return `<div class="category-group"><button type="button" class="category-main" onclick="selectCategory(${id})">${imageMarkup}<span class="category-name">${escapeHtml(c.name)}</span></button></div>`;
+ }).join('');
+}
+function renderCategoryDetail(){
+ const category=categories.find(c=>Number(c.id)===selectedCategory);
+ const active=Boolean(category);
+ document.body.classList.toggle('category-mode',active);
+ $('categoryDetail').hidden=!active;
+ $('categoryCartBar').hidden=!active;
+ if(!active)return;
+ $('categoryTitle').textContent=category.name;
+ const children=subcategories.filter(s=>Number(s.category_id)===selectedCategory);
+ $('categoryTabs').innerHTML=`<button type="button" class="${selectedSubcategory===null?'active':''}" onclick="selectSubcategory(null)" aria-pressed="${selectedSubcategory===null}">الكل</button>`+children.map(s=>{
+  const id=Number(s.id),activeSub=selectedSubcategory===id;
+  return `<button type="button" class="${activeSub?'active':''}" onclick="selectSubcategory(${id})" aria-pressed="${activeSub}">${escapeHtml(s.name)}</button>`;
+ }).join('');
+}
+function selectCategory(id){
+ selectedCategory=Number(id);selectedSubcategory=null;
+ $('search').value='';
+ renderCategories();renderCategoryDetail();renderProducts();renderCart();
+ window.scrollTo({top:0,behavior:'instant'});
+}
+function closeCategory(){
+ selectedCategory=null;selectedSubcategory=null;
+ renderCategories();renderCategoryDetail();renderProducts();renderCart();
+ $('categories').scrollIntoView({block:'start',behavior:'smooth'});
+}
+function selectSubcategory(id){
+ selectedSubcategory=id===null?null:Number(id);
+ renderCategoryDetail();renderProducts();
+ // Keep the products close to the tabs when switching subcategories.
+ if(window.scrollY>$('categoryDetail').offsetTop+160){$('categoryDetail').scrollIntoView({block:'start',behavior:'smooth'});}
+}
+function goToCategoryCart(){
+ document.querySelector('section.cart').scrollIntoView({block:'start',behavior:'smooth'});
+}
+
 function add(i){const p=products[i],step=isWeightProduct(p)?0.125:1,c=cart.find(x=>x.i===i);if(c)c.qty=Number((c.qty+step).toFixed(3));else cart.push({i,qty:step});refresh();}
 function changeQty(i,delta){const c=cart.find(x=>x.i===i);if(!c)return;const p=products[i],step=isWeightProduct(p)?0.125:1;c.qty=Number((c.qty+delta*step).toFixed(3));if(c.qty<=0)cart=cart.filter(x=>x.i!==i);refresh();}
 function removeItem(i){cart=cart.filter(x=>x.i!==i);refresh();}
@@ -131,6 +226,7 @@ function renderCart(){
  }).join('')||'<p>السلة فارغة</p>';
  const t=totals(),estimated=cart.some(c=>isWeightProduct(products[c.i]));
  $('total').textContent=(estimated?'إجمالي المنتجات التقديري: ':'المنتجات: ')+money(t.subtotal)+' جنيه | التوصيل: '+(t.delivery?money(t.delivery)+' جنيه':'مجاني')+' | '+(estimated?'الإجمالي التقديري: ':'الإجمالي: ')+money(t.total)+' جنيه';
+ $('categoryCartCount').textContent=String(cart.length);$('categoryCartPrice').textContent=money(t.subtotal)+' جنيه';
 }
 function setStatus(message){$('orderStatus').textContent=message;}
 async function sendOrder(){
@@ -156,8 +252,8 @@ async function sendOrder(){
  finally{sending=false;$('sendButton').disabled=false;}
 }
 async function fetchTable(path){const r=await fetch(SUPABASE_URL+'/rest/v1/'+path,{headers:{apikey:SUPABASE_KEY}});if(!r.ok)throw Error('HTTP '+r.status);return r.json();}
-async function loadCategories(){try{categories=await fetchTable('categories?select=id,name&is_active=eq.true&order=id.asc');renderCategories();}catch(e){console.error('Categories error:',e);}}
-async function loadSubcategories(){try{subcategories=await fetchTable('subcategories?select=id,name,category_id&order=id.asc');renderCategories();}catch(e){console.error('Subcategories error:',e);}}
+async function loadCategories(){try{categories=await fetchTable('categories?select=id,name&is_active=eq.true&order=id.asc');renderCategories();renderCategoryDetail();}catch(e){console.error('Categories error:',e);}}
+async function loadSubcategories(){try{subcategories=await fetchTable('subcategories?select=id,name,category_id&order=id.asc');renderCategories();renderCategoryDetail();}catch(e){console.error('Subcategories error:',e);}}
 async function loadProducts(){try{const data=await fetchTable('products?select=*&is_active=eq.true&order=id.asc');if(!data.length)return;products.splice(0,products.length,...data.map(p=>({name:p.name,category_id:p.category_id,subcategory_id:p.subcategory_id,price:Number(p.price),unit:p.unit||'piece',image:p.image_url||''})));cart=[];refresh();}catch(e){console.error('Products error:',e);}}
 refresh();loadCategories();loadSubcategories();loadProducts();
 </script>
