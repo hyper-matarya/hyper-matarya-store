@@ -27,6 +27,19 @@
 .category-photo.category-zoom-medium{transform:scale(1.10)}
 @media(max-width:700px){.category-photo-frame{height:120px}}
 @media(max-width:350px){.category-photo-frame{height:100px}}
+
+/* Category cards: consistent heights and selective image sizing */
+#categories{align-items:start}
+#categories .category-group{display:flex;flex-direction:column;min-width:0}
+#categories .category-main{height:218px;min-height:218px;flex:0 0 auto;justify-content:space-between}
+#categories .category-photo-frame{flex:0 0 auto}
+#categories .category-name{width:100%;flex:0 0 auto}
+#categories .category-photo[src$="/bakery.png"],#categories .category-photo[src$="/jam-honey.png"]{transform:scale(1.25)}
+#categories .category-photo[src$="/personal-care.png"],#categories .category-photo[src$="/lebanese-products.png"]{transform:scale(1.17)}
+#categories .category-photo[src$="/cheese-deli.png"]{transform:scale(1.14)}
+#categories .category-photo[src$="/frozen-food.png"]{transform:scale(1.10)}
+@media(max-width:700px){#categories .category-main{height:196px;min-height:196px}}
+@media(max-width:350px){#categories .category-main{height:176px;min-height:176px}}
 </style>
 </head>
 <body>
@@ -92,6 +105,7 @@ const categoryImageRules=[
  [/مربى|عسل/, 'jam-honey.png'],
  [/جبن|أجبان|لانشون|لحوم باردة/, 'cheese-deli.png'],
  [/مخبوزات|عيش|خبز|توست|معجنات/, 'bakery.png'],
+ [/توابل|بهارات|خلطات|صوصات|صلصات|دبس رمان/, 'spices-sauces.png'],
  [/حفاضات|مناديل|ورقيات|ورقية|أطفال/, 'baby-tissues.png'],
  [/مجمدات|مجمدة|فروزن|أطعمة جاهزة/, 'frozen-food.png'],
  [/معلبات|مخللات|تونة|فول/, 'canned-food.png'],
