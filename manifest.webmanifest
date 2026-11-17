@@ -1,1 +1,29 @@
 
+{
+  "name": "هايبر المطرية | المتجر الإلكتروني",
+  "short_name": "هايبر المطرية",
+  "description": "تسوق احتياجات البيت من هايبر المطرية",
+  "lang": "ar",
+  "dir": "rtl",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#187a40",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["shopping"]
+}
